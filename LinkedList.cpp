@@ -11,19 +11,16 @@ using namespace std;
 
 struct node{
     int item;
-    node * next;
+    node * next = nullptr;
+    node() = default;
 };
 class linkedList{
 
-    node *first;
-    node * last;
-    int length;
+    node *first = nullptr;
+    node * last = nullptr;
+    int length = 0;
 public:
-    linkedList() {
-        first = nullptr;
-        last = nullptr;
-        length = 0;
-    }
+    linkedList() = default;
 
     bool isEmpty(){
         if(first == nullptr){
