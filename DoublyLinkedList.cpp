@@ -33,12 +33,12 @@ private:
     };
     node*first = nullptr;
     node*last = nullptr;
-    int length = -1;
+    int length = 0;
 public:
     DoublyLinkedList() = default;
 
     bool isEmpty(){
-        return length == -1;
+        return length == 0;
     }
 
     int DoublyLinkedList_size(){
@@ -191,42 +191,91 @@ public:
         length--;
     }
 
-/*
     void swap(int firstIndex, int secondIndex){
         node* cur = first;
         node* second = first;
-        node* newNode;
-        for(int i = 0; i < firstIndex; i++){
-            cur = cur->next;
+        node* temp = nullptr;
+        node* temp1 = nullptr;
+        if(firstIndex != 0 && secondIndex != length - 1) {
+            for(int i = 0; i < firstIndex; i++){
+                cur = cur->next;
+            }
+
+            for(int j = 0; j < secondIndex; j++){
+                second = second->next;
+            }
+            node *nextCurNode = cur->next;
+            node *nextSecondNode = second->next;
+
+            (cur->prev)->next = second;
+            (second->prev)->next = cur;
+
+            cout << second->prev->item << " " << cur->prev->item << endl;
+
+            temp = second->prev;
+            second->prev = cur->prev;
+            cur->prev = temp;
+            cout << second->next->item << " " << cur->next->item << endl;
+
+            temp = second->next;
+            second->next = cur->next;
+            cur->next = temp;
+
+            nextCurNode->prev = second;
+            nextSecondNode->prev = cur;
+
+
+        } else if(firstIndex == 0 && secondIndex == length - 1){
+            cout << "enter" << endl;
+            for(int j = 0; j < secondIndex; j++){
+                second = second->next;
+            }
+
+            (cur->next)->prev = second;
+            (second->prev)->next = cur;
+            temp = cur->next;
+            temp1 = second->prev;
+            cur->prev = second->prev;
+            second->next = cur->next;
+            second->prev = nullptr;
+            cur->next = nullptr;
+            first = second;
+            last = cur;
+
+        }else if(firstIndex == 0 && secondIndex != length - 1){
+            for(int j = 0; j < secondIndex; j++){
+                second = second->next;
+            }
+
+            (cur->next)->prev = second;
+            temp = cur->next;
+            cur->next = second->next;
+
+            second->next->prev = cur;
+            second->next = temp;
+            second->prev->next = cur;
+            second->prev = nullptr;
+
+            first = second;
+
+        }else if(firstIndex != 0 && secondIndex == length - 1){
+
+            for(int i = 0; i < firstIndex; i++){
+                cur = cur->next;
+            }
+
+            for(int j = 0; j < secondIndex; j++){
+                second = second->next;
+            }
+            cur->prev->next = second;
+            second->prev->next = cur;
+            cur->prev = second->prev;
+            second->next = cur->next;
+
+            cur->next = nullptr;
+            last = cur;
         }
-
-        for(int j = 0; j < secondIndex; j++){
-            second = second->next;
-        }
-        cout << cur->item << " " << second->item << endl;
-
-        newNode = second;
-        newNode->item = second->item;
-        newNode->next = second->next;
-        newNode->prev = newNode->prev;
-        cout << newNode->item << " " << newNode->next << endl;
-        delete second;
-        cout << newNode->item << " " << newNode->next << endl;
-        second->item = cur->item;
-        second->next = cur->next;
-        second->prev = cur->prev;
-        cout << newNode->item << " " << newNode->next << endl;
-
-        cur->item = newNode->item;
-        cur->next = newNode->next;
-        cur->prev = newNode->prev;
-        cout << newNode->item << " " << newNode->next << endl;
-
-        delete newNode;
-        newNode = nullptr;
-
     }
-*/
 
     void reverse(){
         if(isEmpty()){
@@ -322,7 +371,7 @@ public:
     void forwardTraversal(){
         node* curr = first;
         cout <<"{ ";
-        for(int i = 0; i < length + 1; i++){
+        for(int i = 0; i < length; i++){
             cout << curr->item << " ";
             curr = curr->next;
         }
@@ -332,7 +381,7 @@ public:
     void backwardTraversal(){
         node* curr = last;
         cout <<"{ ";
-        for(int i = 0; i < length + 1; i++){
+        for(int i = 0; i < length ; i++){
             cout << curr->item << " ";
             curr = curr->prev;
         }
@@ -348,7 +397,10 @@ int main(){
     l1.pushBack(14);
     l1.insertAfter(0, 2);
     l1.replace(19,3);
+    l1.pushBack(16);
+    l1.pushBack(85);
+    l1.pushBack(6);
     l1.forwardTraversal();
-   l1.reverse();
+   l1.swap(4, 7);
    l1.forwardTraversal();
 }
