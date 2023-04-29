@@ -72,6 +72,20 @@ public:
             length++;
         }
     }
+    
+    bool isExist(T element) {
+        node *current = first;
+        int loc = 0;
+        while (current != NULL) {
+            if (current->item == element)
+                return true;
+            current = current->next;
+            loc++;
+        }
+        return false;
+    }
+
+    
     void print(){
         node* current = first;
         for(int i = 0; i < length; i++){
@@ -178,6 +192,71 @@ public:
         first = pre;
     }
 };
+
+
+template<typename T>
+linkedList<T> merge(linkedList<T>l1, linkedList<T>l2){
+    linkedList<T>l;
+    node* cur1 = l1.pointToFirst();
+    node* cur2 = l2.pointToFirst();
+    while((cur1->next != nullptr) && (cur2->next != nullptr)) {
+        if (cur1->item < cur2->item) {
+            l.insertAtTail(cur1->item);
+            cur1 = cur1->next;
+        }else {
+            l.insertAtTail(cur2->item);
+            cur2 = cur2->next;
+        }
+    }
+    static bool t1 = true;
+    while((cur1->next == nullptr) && (cur2->next != nullptr)) {
+        if (cur1->item < cur2->item && t1) {
+            l.insertAtTail(cur1->item);
+            t1 = false;
+        }
+        l.insertAtTail(cur2->item);
+        cur2 = cur2->next;
+    }
+    static bool t = true;
+    while((cur1->next != nullptr) && (cur2->next == nullptr)) {
+        if (cur1->item > cur2->item && t) {
+            l.insertAtTail(cur2->item);
+            t = false;
+
+            cout << "enter" << cur1->item << " " << cur2->item << endl;
+        }
+        l.insertAtTail(cur1->item);
+        cur1 = cur1->next;
+    }
+
+    if((cur1->next == nullptr) && (cur2->next == nullptr)) {
+        if(!l.isExist(cur1->item) && !l.isExist(cur2->item)){
+            if (cur1->item > cur2->item) {
+
+                l.insertAtTail(cur2->item);
+                l.insertAtTail(cur1->item);
+
+            }else{
+                l.insertAtTail(cur1->item);
+                l.insertAtTail(cur2->item);
+            }
+        }else if(l.isExist(cur1->item) && !l.isExist(cur2->item)){
+            l.insertAtTail(cur2->item);
+
+        }else if(l.isExist(cur2->item) && !l.isExist(cur1->item)){
+            l.insertAtTail(cur1->item);
+        }
+
+    }
+    return l;
+}
+
+template<typename T, typename ...Ts>
+linkedList<T> merge(linkedList<T>l1, linkedList<Ts>...rest){
+    linkedList<int> l = merge(l1, merge(rest...));
+    return l;
+
+}
 
 int main(){
     linkedList l1;
