@@ -1,0 +1,145 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+template<typename T>
+class ArrayList {
+    T *arr;
+    int maxSize = 100;
+    int length = 0;
+public:
+    ArrayList() = default;
+
+    ArrayList(int s) {
+        if (s < 0) {
+            maxSize = 100;
+        } else {
+            maxSize = s;
+        }
+        arr = new T[maxSize];
+    }
+
+    bool isEmpty() {
+        return length == 0;
+    }
+
+    bool isFull() {
+        return length == maxSize;
+    }
+
+    int listSize() {
+        return length;
+    }
+
+    int maxListSize() {
+        return maxSize;
+    }
+
+    void insert(T ele) {
+        if (isFull()) {
+            cout << "Array is full" << endl;
+        }else {
+            arr[length] = ele;
+            length++;
+        }
+    }
+
+    void insertAt(T ele, int pos) {
+        if (isFull()) {
+            cout << "Array full, Create new one ,please" << endl;
+        }else if (pos < 0 || pos > length) {
+            cout << "Out of scope" << endl;
+        } else {
+            for (int i = length + 1; i > pos; i--) {
+                arr[i] = arr[i - 1];
+            }
+            arr[pos] = ele;
+            length++;
+        }
+    }
+
+    T retrieveAt(int pos){
+        if(pos >= length){
+            cout << "Out of scope index" << endl;
+        }else{
+           return arr[pos];
+        }
+        return 0;
+    }
+
+    void removeAt(int pos) {
+        if (isEmpty()) {
+            cout << "Array is empty" << endl;
+        } else if (pos > length) {
+            cout << "OUT OF SCOPE INDEX" << endl;
+        } else {
+            for (int i = pos; i < length; i++) {
+                arr[i] = arr[i + 1];
+            }
+            length--;
+        }
+    }
+
+    void replaceAt(T ele, int pos){
+        if(pos >= length){
+            cout << "OUT OF SCOPE POSITION" << endl;
+        }else{
+            arr[pos] = ele;
+        }
+    }
+
+    bool isItemAtEqual(T ele, int pos){
+        if(pos < length){
+            if(arr[pos] == ele){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    int search(int num) {
+        for (int i = 0; i < length; i++) {
+            if (arr[i] == num) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    int insertNoDuplicate(int element) {
+        if (search(element) == -1) {
+            insertAt(length - 1, element);
+        } else {
+            cout << "This is a repeated element...";
+        }
+    }
+
+    void print() {
+        cout << "{ ";
+        for (int i = 0; i < length; i++) {
+            cout << arr[i] << " ";
+        }
+        cout << "}" << endl;
+    }
+
+    void clear() {
+        for (int i = length; i > 0; i--) {
+            arr[i] = 0;
+            length--;
+        }
+    }
+};
+
+
+
+int main(){
+    ArrayList<int>num{20};
+    num.insert(12);
+    num.insert(20);
+    num.insert(15);
+    num.insertAt(2, 1);
+    num.replaceAt(45,1);
+    num.print();
+    num.removeAt(2);
+    num.print();
+    cout << num.isItemAtEqual(12,5);
+}
